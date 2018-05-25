@@ -28,6 +28,7 @@ package_group(
 load(
     "//tensorflow:tensorflow.bzl",
     "if_android",
+    "tf_cc_shared_object",
     "tf_cc_test",
     "tf_cc_tests",
     "tf_cc_binary",

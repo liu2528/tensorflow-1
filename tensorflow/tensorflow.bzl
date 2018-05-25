@@ -973,6 +973,59 @@ register_extension_info(
     label_regex_for_dep = "{extension_name}",
 )
 
+def tf_shared_kernel_library(name,
+                             prefix=None,
+                             srcs=None,
+                             hdrs=None,
+                             deps=None,
+                             alwayslink=1,
+                             copts=None,
+                             is_external=False,
+                             **kwargs):
+  """A rule to build a TensorFlow OpKernel that lives in a shared library.
+
+  May either specify srcs/hdrs or prefix.  Similar to tf_cuda_library,
+  but with alwayslink=1 by default.  If prefix is specified:
+    * prefix*.cc (except *.cu.cc) is added to srcs
+    * prefix*.h (except *.cu.h) is added to hdrs
+    * prefix*.cu.cc and prefix*.h (including *.cu.h) are added to gpu_srcs.
+  With the exception that test files are excluded.
+  For example, with prefix = "cast_op",
+    * srcs = ["cast_op.cc"]
+    * hdrs = ["cast_op.h"]
+    * gpu_srcs = ["cast_op_gpu.cu.cc", "cast_op.h"]
+    * "cast_op_test.cc" is excluded
+  With prefix = "cwise_op"
+    * srcs = ["cwise_op_abs.cc", ..., "cwise_op_tanh.cc"],
+    * hdrs = ["cwise_ops.h", "cwise_ops_common.h"],
+    * gpu_srcs = ["cwise_op_gpu_abs.cu.cc", ..., "cwise_op_gpu_tanh.cu.cc",
+                  "cwise_ops.h", "cwise_ops_common.h",
+                  "cwise_ops_gpu_common.cu.h"]
+    * "cwise_ops_test.cc" is excluded
+  """
+  if not srcs:
+    srcs = []
+  if not hdrs:
+    hdrs = []
+  if not deps:
+    deps = []
+  if not copts:
+    copts = []
+  copts = copts + tf_copts(is_external=is_external)
+  if prefix:
+    srcs = srcs + native.glob(
+        [prefix + "*.cc"], exclude=[prefix + "*test*"])
+    hdrs = hdrs + native.glob(
+        [prefix + "*.h"], exclude=[prefix + "*test*"])
+
+  tf_cc_shared_object(
+      name=name,
+      srcs=srcs,
+      hdrs=hdrs,
+      copts=copts,
+      deps=deps,
+      **kwargs)
+
 def tf_kernel_library(name,
                       prefix=None,
                       srcs=None,
