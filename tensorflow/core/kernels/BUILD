@@ -621,7 +621,7 @@ cc_library(
         ":bitcast_op",
         ":broadcast_to_op",
         ":concat_op",
-        ":constant_op",
+        ":constant_op.so",
         ":depth_space_ops",
         ":diag_op",
         ":edit_distance_op",
@@ -691,8 +691,17 @@ tf_kernel_library(
 
 tf_shared_kernel_library(
     name = "constant_op.so",
+    framework_so = [
+        "//tensorflow:libtensorflow_framework.so",
+    ],
     prefix = "constant_op",
-    deps = ARRAY_DEPS,
+    deps = [
+        ":bounds_check_lib",
+        ":fill_functor",
+        "@protobuf_archive//:protobuf_headers",
+        "//tensorflow/core:framework_headers_lib",
+        "//third_party/eigen3",
+    ],
 )
 
 tf_kernel_library(
@@ -1037,7 +1046,7 @@ tf_cuda_cc_test(
     srcs = ["constant_op_test.cc"],
     tags = ["no_cuda_on_cpu_tap"],
     deps = [
-        ":constant_op",
+        ":constant_op.so",
         ":ops_testutil",
         ":ops_util",
         "//tensorflow/core:core_cpu",
@@ -4273,61 +4282,61 @@ STRING_DEPS = [
     "//tensorflow/core:string_ops_op_lib",
 ]
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "string_to_hash_bucket_op",
     prefix = "string_to_hash_bucket_op",
     deps = STRING_DEPS,
 )
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "reduce_join_op",
     prefix = "reduce_join_op",
     deps = STRING_DEPS,
 )
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "string_join_op",
     prefix = "string_join_op",
     deps = STRING_DEPS,
 )
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "regex_full_match_op",
     prefix = "regex_full_match_op",
     deps = STRING_DEPS + ["@com_googlesource_code_re2//:re2"],
 )
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "regex_replace_op",
     prefix = "regex_replace_op",
     deps = STRING_DEPS + ["@com_googlesource_code_re2//:re2"],
 )
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "string_split_op",
     prefix = "string_split_op",
     deps = STRING_DEPS,
 )
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "string_strip_op",
     prefix = "string_strip_op",
     deps = STRING_DEPS,
 )
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "substr_op",
     prefix = "substr_op",
     deps = STRING_DEPS,
 )
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "as_string_op",
     prefix = "as_string_op",
     deps = STRING_DEPS,
 )
 
-tf_shared_kernel_library(
+tf_kernel_library(
     name = "base64_ops",
     prefix = "base64_ops",
     deps = STRING_DEPS,
