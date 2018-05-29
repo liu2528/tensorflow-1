@@ -1043,10 +1043,13 @@ tf_cuda_cc_test(
 tf_cuda_cc_test(
     name = "constant_op_test",
     size = "small",
-    srcs = ["constant_op_test.cc"],
+    srcs = [
+        "constant_op_test.cc",
+        ":constant_op.so",
+    ],
     tags = ["no_cuda_on_cpu_tap"],
     deps = [
-        ":constant_op.so",
+        ":constant_op_headers",
         ":ops_testutil",
         ":ops_util",
         "//tensorflow/core:core_cpu",

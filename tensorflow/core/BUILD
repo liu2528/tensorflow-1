@@ -1081,6 +1081,7 @@ cc_library(
         "framework/fake_input.cc",
         "framework/function_testlib.cc",
         "graph/testlib.cc",
+        "//tensorflow/core/kernels:constant_op.so",
     ],
     hdrs = [
         "common_runtime/function_testlib.h",
@@ -1110,7 +1111,7 @@ cc_library(
         ":tensor_testutil",
         ":test",
         "//tensorflow/cc:scope",
-        "//tensorflow/core/kernels:constant_op",
+        "//tensorflow/core/kernels:constant_op_headers",
         "//tensorflow/core/kernels:ops_testutil",
         "//tensorflow/core/kernels:ops_util",
     ],

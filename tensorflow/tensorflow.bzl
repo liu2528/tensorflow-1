@@ -1017,8 +1017,14 @@ def tf_shared_kernel_library(name,
         [prefix + "*.cc"], exclude=[prefix + "*test*"])
     srcs = srcs + native.glob(
         [prefix + "*.h"], exclude=[prefix + "*test*"])
+    hdrs = hdrs + native.glob(
+        [prefix + "*.h"], exclude=[prefix + "*test*"])
 
   # TODO package headers separately.
+  native.cc_library(
+      name = prefix + "_headers",
+      hdrs = hdrs,
+  )
 
   tf_cc_shared_object(
       name=name,
