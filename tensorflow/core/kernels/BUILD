@@ -36,6 +36,7 @@ load(
     "tf_cuda_library",
     "tf_opts_nortti_if_android",
     "tf_kernel_library",
+    "tf_shared_kernel_library",
     "tf_mkl_kernel_library",
     "cc_header_only_library",
     "if_not_windows",
@@ -689,7 +690,7 @@ tf_kernel_library(
 )
 
 tf_shared_kernel_library(
-    name = "constant_op",
+    name = "constant_op.so",
     prefix = "constant_op",
     deps = ARRAY_DEPS,
 )
