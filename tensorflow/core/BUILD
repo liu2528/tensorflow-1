@@ -90,6 +90,7 @@ load(
     "tf_genrule_cmd_append_to_srcs",
     "tf_opts_nortti_if_android",
     "cc_header_only_library",
+    "rpath_link_linkopts",
 )
 load("//tensorflow:tensorflow.bzl", "tf_cc_test_mkl")
 load("//tensorflow:tensorflow.bzl", "tf_cc_test_gpu")
@@ -1081,7 +1082,6 @@ cc_library(
         "framework/fake_input.cc",
         "framework/function_testlib.cc",
         "graph/testlib.cc",
-        "//tensorflow/core/kernels:constant_op.so",
     ],
     hdrs = [
         "common_runtime/function_testlib.h",

@@ -1045,8 +1045,8 @@ tf_cuda_cc_test(
     size = "small",
     srcs = [
         "constant_op_test.cc",
-        ":constant_op.so",
     ],
+    linkstatic = 1,
     tags = ["no_cuda_on_cpu_tap"],
     deps = [
         ":constant_op_headers",
